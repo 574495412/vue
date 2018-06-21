@@ -1,4 +1,5 @@
 import Interface from '../../api/interface'
+import Vue from 'vue';
 export default {
   data() {
     return {
@@ -529,8 +530,7 @@ export default {
           pageSize: 1
         }
     ).then(res=> {
-        this.netRed.leftShow = res.data.list[0];
-        this.netRed.leftShow.imgUrl = this.$baseU + res.data.list[0].imgUrl;
+
       }, err=> {
 
       })
@@ -568,8 +568,8 @@ export default {
     }
   },
   mounted(){
-    VueStorage.setItem('ok',213);
-    console.log(VueStorage)
+    Vue.ls.set('ok',213);
+    console.log( Vue.ls)
     //页面加载获取快讯模块的招聘信息列表
     this.getInformationList()
     // //页面加载获取娱乐下面的视频列表

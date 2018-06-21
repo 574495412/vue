@@ -13,7 +13,7 @@ module.exports = {
     proxyTable: {
       '/api': {
         changeOrigin: true,
-        target: 'http://122.114.91.41:8900',
+        target: 'https://www.easy-mock.com/mock/5b2b53bd15c3bc6ee52cfc8d/ca-b2b',
         pathRewrite: {
           '^/api': ''
         }

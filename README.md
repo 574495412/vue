@@ -1,5 +1,5 @@
 ## vue-cli-project
-- | 获取数据 | 请求数据，已包含vue-router，vuex，api，axios. webpack, 储存用vue-ls, 异步async/await, css less.。
+- | 获取数据 | 请求数据，已包含vue-router，vuex，api，axios. webpack, 储存用vue-ls, 异步async/await, css less,es6,easymock。
 > A Vue.js project
 
 ### 使用
@@ -21,15 +21,15 @@ npm run dev
 ├── App.vue
 ├── api
 │   ├── api.js
-│   └── fetch.js
+│   └── api_user.js
 ├── assets
 │   └── logo.png
 ├── components
 │   ├── common
 │   ├── footer
 │   └── header
-├── libs
-│   └── util.js
+├── plugins
+│   └── swiper.min.js
 ├── main.js
 ├── router
 │   └── index.js
@@ -38,7 +38,7 @@ npm run dev
 │   ├── modules
 │   └── mutation-types.js
 └── views
-    └── doctor
+└── doctor
 ```
 
 
@@ -51,125 +51,12 @@ npm run dev
 
 
 ```js
-import fetch from './fetch';
 
-export default {
-  // 获取医生列表
-  list(params) {
-    return fetch.get('/doctor/list', params)
-  },
-
-  // 获取医生详情信息
-  detail(id) {
-    return fetch.post('/doctor/detail/' + id);
-  },
-}
 ```
 
-#### fetch.js 文件是封装axios请求，以及请求处理，和http状态码的等处理
+#### api.js 文件是封装axios请求，以及请求处理，和http状态码的等处理
 
 ```js
-import Util from '../libs/util'
-import qs from 'qs'
-import Vue from 'vue'
-
-Util.ajax.defaults.headers.common = {
-  'X-Requested-With': 'XMLHttpRequest'
-};
-
-Util.ajax.interceptors.request.use(config => {
-  /**
-   * 在这里做loading ...
-   * @type {string}
-   */
-
-  // 获取token
-  config.headers.common['Authorization'] = 'Bearer ' + Vue.ls.get("web-token");
-  return config
-
-}, error => {
-  return Promise.reject(error)
-
-});
-
-Util.ajax.interceptors.response.use(response => {
-
-  /**
-   * 在这里做loading 关闭
-   */
-
-    // 如果后端有新的token则重新缓存
-  let newToken = response.headers['new-token'];
-
-  if (newToken) {
-    Vue.ls.set("web-token", newToken);
-  }
-
-  return response;
-
-}, error => {
-  let response = error.response;
-  if (response.status == 401) {
-    // 处理401错误
-
-  } else if (response.status == 403) {
-    // 处理403错误
-
-  } else if (response.status == 412) {
-    // 处理412错误
-
-  } else if (response.status == 413) {
-    // 处理413权限不足
-
-  }
-
-  return Promise.reject(response)
-
-});
-
-export default {
-  post(url, data) {
-
-    return Util.ajax({
-      method: 'post',
-      url: url,
-      data: qs.stringify(data),
-      timeout: 30000,
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-      }
-    })
-  },
-
-  get(url, params) {
-    return Util.ajax({
-      method: 'get',
-      url: url,
-      params,
-    })
-  },
-
-  delete(url, params) {
-    return Util.ajax({
-      method: 'delete',
-      url: url,
-      params
-    })
-  },
-
-  put(url, data) {
-
-    return Util.ajax({
-      method: 'put',
-      url: url,
-      data: qs.stringify(data),
-      timeout: 30000,
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-      }
-    })
-  }
-}
 
 ```
 
@@ -178,65 +65,35 @@ export default {
 
 
 ```js
-├── index.js
-├── modules
-│   └── doctor.js
-└── mutation-types.js
-
-import doctor from '../../api/doctor'
-import * as types from '../mutation-types'
-
-const state = {
-  // 医生列表
-  doctorList: [],
-  // 医生详情信息
-  doctorDetail: null,
-};
-
-const mutations = {
-  // 设置医生列表
-  [types.SET_DOCTOR_LIST](state, data) {
-    state.doctorList = data
-  },
-  // 设置医生详情信息
-  [types.SET_DOCTOR_DETAIL](state, data) {
-    state.doctorDetail = data
-  },
-};
-
-const actions = {
-
-  /**
-   * 获取医生顾问列表
-   * @param state
-   * @param commit
-   * @param params
-   * @returns {Promise<void>}
-   */
-  async getDoctorList({state, commit}, params) {
-    let ret = await doctor.list(params);
-    commit(types.SET_DOCTOR_LIST, ret.data.data);
-  },
-
-  /**
-   * 获取医生详情信息
-   * @param state
-   * @param commit
-   * @param id 医生ID
-   * @returns {Promise<void>}
-   */
-  async getDoctorDetail({state, commit}, id) {
-    let ret = await doctor.detail(id);
-    commit(types.SET_DOCTOR_DETAIL, ret.data.data);
-  }
-};
+import {
+  login,
+  logout
+} from '../api/api_user'
+import {
+  GET_USERINFO,
+  SAVE_ADDRESS
+} from './mutation-types.js'
 
 export default {
-  state,
-  actions,
-  mutations
-}
 
+  async getUserInfo({
+    commit,
+    state
+  }) {
+    let res = await login();//这里异步请求,做到数据与页面的分离
+    commit(RECORD_ADDRESS, res)
+  },
+  async saveAddress({
+    commit,
+    state
+  }) {
+
+    if(state.removeAddress.length > 0) return;
+
+    let addres = await logout(state.userInfo.user_id);
+    commit(RECORD_ADDRESS, addres); 
+  },
+}
 ```
 
 #### 在页面里需要执行引入：
@@ -250,40 +107,40 @@ import {mapActions, mapState} from 'vuex'
 
 ```js
 └── doctor
-    ├── detail.vue
-    └── list.vue
+├── detail.vue
+└── list.vue
 
 <script>
-  import {mapActions, mapState} from 'vuex'
+import {mapActions, mapState} from 'vuex'
 
-  export default {
-    components: {},
-    data() {
-      return {}
-    },
-    computed: {
-      ...mapState({
-        doctorList: state => state.doctor.doctorList,
-      })
-    },
-    async created() {
-      // 医生类型
-      let params = {type: 'EXP'};
-      // 获取医生列表
-      await this.getDoctorList(params);
-    },
-    methods: {
-      ...mapActions([
-        // 获取医生列表
-        'getDoctorList'
-      ]),
+export default {
+components: {},
+data() {
+return {}
+},
+computed: {
+...mapState({
+doctorList: state => state.doctor.doctorList,
+})
+},
+async created() {
+// 医生类型
+let params = {type: 'EXP'};
+// 获取列表
+await this.getDoctorList(params);
+},
+methods: {
+...mapActions([
+// 获取列表
+'getDoctorList'
+]),
 
-      // 路由跳转方法
-      routeLink(link) {
-        this.$router.push({path: link});
-      },
-    }
-  }
+// 路由跳转方法
+routeLink(link) {
+this.$router.push({path: link});
+},
+}
+}
 </script>
 ```
 

@@ -3,8 +3,8 @@
 // 	getAddressList
 // } from '../service/getData'
 import {
-	GET_USERINFO,
-	SAVE_ADDRESS
+	RECORD_ADDRESS,
+	ADD_CART
 } from './mutation-types.js'
 
 export default {
@@ -14,7 +14,7 @@ export default {
 		state
 	}) {
 		let res = await getUser();
-		commit(GET_USERINFO, res)
+		commit(RECORD_ADDRESS, res)
 	},
 	async saveAddress({
 		commit,
@@ -24,6 +24,6 @@ export default {
 		if(state.removeAddress.length > 0) return;
 
 		let addres = await getAddressList(state.userInfo.user_id);
-		commit(SAVE_ADDRESS, addres);	
+		commit(ADD_CART, addres);	
 	},
 }

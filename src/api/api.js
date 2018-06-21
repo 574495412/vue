@@ -6,7 +6,7 @@ const baseURL = process.env.NODE_ENV === 'development'
   // 测试环境api接口
   ? '/api'
   // 线上环境api接口
-  : 'http://api.yibowanbo.com';
+  : ' https://www.easy-mock.com/mock/5b2b53bd15c3bc6ee52cfc8d/ca-b2b';
 axios.defaults.baseURL = baseURL;
 axios.defaults.headers.common['Authorization'] = process.env.API_TOKEN
     // axios.defaults.headers.common['Authorization'] = 'Bearer c92dcc04-e3c1-4628-899f-f9c26a4f7746'; //process.env.API_TOKEN;

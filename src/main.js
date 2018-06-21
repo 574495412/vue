@@ -6,7 +6,7 @@ import VueLocalStorage from 'vue-ls';
 
 Vue.config.productionTip = false
 Vue.use(VueLocalStorage);
-
+import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 // 引入ElementUI组件
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
