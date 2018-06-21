@@ -568,6 +568,8 @@ export default {
     }
   },
   mounted(){
+    VueStorage.setItem('ok',213);
+    console.log(VueStorage)
     //页面加载获取快讯模块的招聘信息列表
     this.getInformationList()
     // //页面加载获取娱乐下面的视频列表

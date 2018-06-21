@@ -6,7 +6,13 @@ Router.prototype.goBack = function() {
   this.isBack = true
   window.history.go(-1)
 }
-const index = r => require.ensure([], () => r(require('@/views/index/index')), 'index')
+/**
+ * 
+ * @param {*require.ensure} 全部采用按需加载的方式路由，便于webpack打包成多模块
+ */
+const index = r => require.ensure([], () => r(require('@/views/index/index')), 'index');
+const list = r => require.ensure([], () => r(require('@/views/doctor/list')), 'list');
+const detail = r => require.ensure([], () => r(require('@/views/doctor/detail')), 'detail');
 export default new Router({
   // 哈斯
   mode: 'history',
@@ -40,16 +46,12 @@ export default new Router({
     {
       // 医生列表
       path: '/doctor/list',
-      component(resolve) {
-        require(['../views/doctor/list.vue'], resolve);
-      }
+      component:list
     },
     {
       // 医生详情
       path: '/doctor/detail/:doctorId',
-      component(resolve) {
-        require(['../views/doctor/detail.vue'], resolve);
-      }
+      component:detail
     },
   ]
 })

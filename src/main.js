@@ -6,7 +6,8 @@ import VueLocalStorage from 'vue-ls';
 
 Vue.config.productionTip = false
 Vue.use(VueLocalStorage);
-// 引入UI组件
+
+// 引入ElementUI组件
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 Vue.use(ElementUI);

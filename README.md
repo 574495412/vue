@@ -20,12 +20,14 @@ npm run dev
 ```
 ├── App.vue
 ├── api
-│   ├── doctor.js
+│   ├── api.js
 │   └── fetch.js
 ├── assets
 │   └── logo.png
 ├── components
-│   └── HelloWorld.vue
+│   ├── common
+│   ├── footer
+│   └── header
 ├── libs
 │   └── util.js
 ├── main.js
