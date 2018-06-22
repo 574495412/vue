@@ -2,15 +2,18 @@
   <div class="dashboard-container">
     <!-- 头部 -->
       <head-top head-title="红包说明" go-back='true'></head-top>
+      <leftNav></leftNav>
   </div>
 </template>
 <script>
   import {mapActions, mapState} from 'vuex'
 	import headTop from '../../components/header/headTop'
+	import leftNav from '../../components/leftnav/leftNav'
   export default {
     name: 'dashboard',
     components: {
-         headTop
+      headTop,
+      leftNav
     },
     data() {
       return {}
