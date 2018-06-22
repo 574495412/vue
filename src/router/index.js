@@ -10,7 +10,7 @@ Router.prototype.goBack = function() {
  * 
  * @param {*require.ensure} 全部采用按需加载的方式路由，便于webpack打包成多模块
  */
-const index = r => require.ensure([], () => r(require('@/views/index/index')), 'index');
+const dashboard = r => require.ensure([], () => r(require('@/views/dashboard/index')), 'dashboard');
 const list = r => require.ensure([], () => r(require('@/views/doctor/list')), 'list');
 const detail = r => require.ensure([], () => r(require('@/views/doctor/detail')), 'detail');
 export default new Router({
@@ -26,14 +26,13 @@ export default new Router({
   },
   routes: [
     {
-      // 重定向首页
       path: '/',
-      redirect: 'index'
+      redirect: 'dashboard' // 重定向面板页
     },
     {
-      path: '/index',
-      name: 'index',
-      component: index,
+      path: '/dashboard',
+      name: 'dashboard',
+      component: dashboard,
       beforeEnter:(to,from,next)=>{
 				console.log('to',to.path);
 				console.log('from',from.path);
@@ -41,17 +40,16 @@ export default new Router({
 			},
 			afterEnter:(route)=>{
 				console.log(route);
-			}
-    },
-    {
-      // 医生列表
-      path: '/doctor/list',
-      component:list
-    },
-    {
-      // 医生详情
-      path: '/doctor/detail/:doctorId',
-      component:detail
-    },
+      },
+      children: [{
+        path: '',
+        component: list,
+        meta: [],
+      },{
+        path: '/list',
+        component: list,
+        meta: ['添加数据', '添加商铺'],
+      }]
+    }
   ]
 })

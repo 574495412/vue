@@ -1,7 +1,7 @@
-// import {
-// 	getUser,
-// 	getAddressList
-// } from '../service/getData'
+import {
+	getUser,
+	getAddressList
+} from '../api/services'
 import {
 	RECORD_ADDRESS,
 	ADD_CART
