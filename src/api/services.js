@@ -4,9 +4,13 @@
  */
 import axios from "./api";
 
+/**
+ * 登录
+ */
+
 export function login (params) {
   return new Promise((resolve, reject) => {
-    axios.post('/api/login', { params }).then(response => {
+    axios.post('/login', { params }).then(response => {
       resolve(response.data);
     }, err => {
       resolve();
@@ -16,9 +20,9 @@ export function login (params) {
       })
   })
 }
-export function getUser (params) {
+export function signout (params) {
   return new Promise((resolve, reject) => {
-    axios.post('/getUser', { params }).then(response => {
+    axios.post('/signout', { params }).then(response => {
       resolve(response.data);
     }, err => {
       resolve();
@@ -29,4 +33,38 @@ export function getUser (params) {
   })
 }
 
+/**
+ * 获取用户信息
+ */
+
+export function getUser () {
+  return new Promise((resolve, reject) => {
+    axios.post('/getUser', { user_id:  localStorage.getItem('user_id') }).then(response => {
+      resolve(response.data);
+    }, err => {
+      resolve();
+    })
+      .catch((error) => {
+        resolve()
+      })
+  })
+}
+
+
+/**
+ * 获取用户地址
+ */
+
+export function getAddressList () {
+  return new Promise((resolve, reject) => {
+    axios.post('/getAddressList', { user_id:  localStorage.getItem('user_id') }).then(response => {
+      resolve(response.data);
+    }, err => {
+      resolve();
+    })
+      .catch((error) => {
+        resolve()
+      })
+  })
+}
 
