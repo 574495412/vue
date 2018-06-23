@@ -7,7 +7,7 @@ import getters from './getters'
 Vue.use(Vuex)
 
 const state = {
-	latitude: '', // 当前状态
+	userInfo: '', // 当前状态
 }
 
 export default new Vuex.Store({

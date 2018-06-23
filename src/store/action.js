@@ -3,7 +3,7 @@ import {
 	getAddressList
 } from '../api/services'
 import {
-	RECORD_ADDRESS,
+	GET_USERINFO,
 	ADD_CART
 } from './mutation-types.js'
 
@@ -14,7 +14,7 @@ export default {
 		state
 	}) {
 		let res = await getUser();
-		commit(RECORD_ADDRESS, res)
+		commit(GET_USERINFO, res)
 	},
 	async saveAddress({
 		commit,

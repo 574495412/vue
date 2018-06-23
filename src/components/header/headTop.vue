@@ -2,14 +2,15 @@
    <div class="header_container">
 		<el-breadcrumb separator="/">
 			<el-breadcrumb-item :to="{ path: '/dashboard' }">
-            <img class="header_container_logo" src="../../assets/logo.png"></el-breadcrumb-item>
+            <img class="header_container_logo" src="../../assets/logo.png">
+            </el-breadcrumb-item>
 			<el-breadcrumb-item v-for="(item, index) in $route.meta" key="index">{{item}}</el-breadcrumb-item>
 		</el-breadcrumb>
 		<el-dropdown @command="handleCommand" menu-align='start'>
 			<img class="avator" src="">
 			<el-dropdown-menu slot="dropdown">
 				<el-dropdown-item command="dashboard">首页</el-dropdown-item>
-				<el-dropdown-item command="singout">退出</el-dropdown-item>
+				<el-dropdown-item command="signout">退出</el-dropdown-item>
 			</el-dropdown-menu>
 		</el-dropdown>
     </div>
@@ -17,7 +18,8 @@
 
 <script>
 
-    import {mapState, mapActions} from 'vuex'
+    import {mapState, mapActions} from 'vuex';
+    import {signout} from '@/api/services'
     export default {
     	data(){
             return{
@@ -29,7 +31,6 @@
             this.getUserInfo();
 
         },
-        props: ['signinUp', 'headTitle', 'goBack'],
         computed: {
             ...mapState([
                 'userInfo'
@@ -40,9 +41,9 @@
                 'getUserInfo'
             ]),
             async handleCommand(command) {
-				if (command == 'home') {
-					this.$router.push('/manage');
-				}else if(command == 'singout'){
+				if (command == 'dashboard') {
+					this.$router.push('/dashboard');
+				}else if(command == 'signout'){
 					const res = await signout()
 					if (res.status == 1) {
 						this.$message({
